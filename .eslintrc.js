@@ -45,6 +45,8 @@ module.exports = {
         "react",
     ],
     rules: {
+        "default-param-last": "off",
+        "@typescript-eslint/default-param-last": ["off"],
         "@typescript-eslint/no-use-before-define": ["error"],
         "@typescript-eslint/semi": ["error"],
         "@typescript-eslint/explicit-module-boundary-types": "off",
@@ -69,6 +71,8 @@ module.exports = {
         "max-len": [2, 200, 4],
         "no-use-before-define": "off",
         "no-shadow": "off",
+        "react/jsx-no-useless-fragment": "off",
+        "react/function-component-definition": "off",
         "react/require-default-props": "off",
         "react/display-name": "off",
         "react/destructuring-assignment": 1,

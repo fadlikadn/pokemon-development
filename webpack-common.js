@@ -18,6 +18,7 @@ module.exports = {
         watchOptions: {
             ignored: ["**/*.test.ts", "**/*.test.tsx", "**/node_modules"],
         },
+        port: 8081,
     },
     target: "web",
     module: {
