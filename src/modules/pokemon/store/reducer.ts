@@ -3,7 +3,6 @@ import Pokemon from "../models/pokemon";
 import { moduleId } from "../settings/config";
 import { ActionTypes, PokemonActionKeys } from "./actionTypes";
 import fetchPokemonList from "./reducer/fetchPokemonList";
-// TODO: merge with core reducer later
 import { StateDefinition as CoreState } from "../../../store/reducer";
 
 export const InitialState = {
@@ -11,8 +10,10 @@ export const InitialState = {
         count: 0,
         next: "",
         previous: "",
-        result: [],
+        results: [],
     } as PaginationResponse<Pokemon>,
+    pokemons: [] as Pokemon[],
+    morePokemonAvailable: true,
 };
 
 const reducer = (state = InitialState, action: ActionTypes) => {

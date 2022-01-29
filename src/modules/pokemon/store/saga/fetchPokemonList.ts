@@ -15,8 +15,9 @@ function* implFetchPokemonList(action: FetchPokemonListAction) {
             action.payload?.limit || 151,
         );
         yield put(FETCH_POKEMON_LIST_SUCCESS_ACTION_CREATOR(paginatedPokemonList));
-    } catch {
-        // console.log(error);
+    } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(error);
     }
 }
 

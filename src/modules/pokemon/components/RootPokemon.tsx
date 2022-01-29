@@ -1,7 +1,6 @@
 import { Component, ErrorInfo } from "react";
 import { DynamicModuleLoader } from "redux-dynamic-modules-react";
 import getPokemonModule from "../store/getPokemonModule";
-// TODO: prepare the tsx to view pokemon list
 import PokemonList from "./PokemonList";
 
 export default class RootPokemon extends Component {

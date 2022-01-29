@@ -4,6 +4,7 @@ import PaginationResponse from "../../../interfaces/paginationResponse";
 export enum PokemonActionKeys {
     FETCH_POKEMON_LIST = "FETCH_POKEMON_LIST",
     FETCH_POKEMON_LIST_SUCCESS = "FETCH_POKEMON_LIST_SUCCESS",
+    TEST_FETCH = "TEST_FETCH",
 }
 
 export interface FetchPokemonListAction {
@@ -21,6 +22,11 @@ export interface FetchPokemonListSuccessAction {
     }
 }
 
+export interface TestFetchAction {
+    type: typeof PokemonActionKeys.TEST_FETCH;
+}
+
 export type ActionTypes =
     FetchPokemonListAction |
-    FetchPokemonListSuccessAction;
+    FetchPokemonListSuccessAction |
+    TestFetchAction;
