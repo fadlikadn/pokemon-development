@@ -16,7 +16,7 @@ export const moduleEntry: ModuleDefinition = {
             componentId: "pokemon-list",
             component: lazy(() => import("./components/PokemonDetail")),
             componentRoute: "/pokemon/:name",
-            componentRouteExact: true,
+            componentRouteExact: false,
             componentAlwaysLoaded: false,
         },
     ],

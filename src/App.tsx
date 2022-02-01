@@ -6,8 +6,13 @@ import { TransitionProps } from "@mui/material/transitions";
 import { useModuleLoader } from "./modules";
 import useComponent from "./helpers/useComponents";
 import ComponentDefinition from "./interfaces/componentDefinition";
+interface AppProps {
+    // history: any,
+}
 
-const App = () => {
+const App: FC<AppProps> = ({ 
+    // history: any,
+}): JSX.Element => {
     const { getComponents } = useComponent();
     useModuleLoader();
     // eslint-disable-next-line no-console
@@ -22,6 +27,7 @@ const App = () => {
         >
             <CssBaseline />
             <Suspense fallback={<></>}>
+                {/* <ConnectedRouter history={history}> */}
                 <Switch>
                 {/* {getComponents({ componentAlwaysLoaded: true }).map((componentDefinition: ComponentDefinition) => { */}
                     {getComponents({ componentAlwaysLoaded: false }).map((componentDefinition: ComponentDefinition) => {
@@ -37,6 +43,7 @@ const App = () => {
                         );
                     })}
                 </Switch>
+                {/* </ConnectedRouter> */}
             </Suspense>
         </SnackbarProvider>
     );

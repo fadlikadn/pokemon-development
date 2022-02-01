@@ -18,7 +18,6 @@ function* implFetchPokemonDetail(action: FetchPokemonDetailAction) {
 }
 
 function* watchFetchPokemonDetail() {
-    console.log("watch fetch pokemon detail");
     yield takeEvery(PokemonActionKeys.FETCH_POKEMON_DETAIL, implFetchPokemonDetail);
 }
 

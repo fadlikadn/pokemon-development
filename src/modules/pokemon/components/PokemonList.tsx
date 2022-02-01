@@ -36,8 +36,8 @@ const PokemonList: FC = (): JSX.Element | null => {
 
     const getPokemonDetail = (name: string): void => {
         console.log("get pokemon detail");
-        dispatch(FETCH_POKEMON_DETAIL_ACTION_CREATOR(name));
-        // history.push(`pokemon/${name}`);
+        // dispatch(FETCH_POKEMON_DETAIL_ACTION_CREATOR(name));
+        history.push(`pokemon/${name}`);
     };
 
     const onLoadNext = () => {
@@ -52,7 +52,9 @@ const PokemonList: FC = (): JSX.Element | null => {
         // get Pokemon List
         // eslint-disable-next-line no-console
         console.log("fetching pokemon list");
-        getPokemons(0, 50);
+        if (pokemons.length === 0) {
+            getPokemons(0, 50);
+        }
     }, []);
 
     useEffect(() => {

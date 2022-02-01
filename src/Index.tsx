@@ -6,10 +6,10 @@ import { Provider } from "react-redux";
 import { StyledEngineProvider } from "@mui/material";
 import * as serviceWorker from "./serviceWorker";
 import App from "./App";
-import { store } from "./store/store";
+import { configureStore } from "./store/store";
 
 ReactDOM.render(
-    <Provider store={store}>
+    <Provider store={configureStore}>
         <Router>
             <StyledEngineProvider injectFirst>
                 <App />

@@ -1,34 +1,50 @@
-import { FC, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { FC, useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { FETCH_POKEMON_DETAIL_ACTION_CREATOR, TEST_FETCH_ACTION_CREATOR } from "../store/actions";
+import { DynamicModuleLoader } from "redux-dynamic-modules-react";
+import getPokemonModule from "../store/getPokemonModule";
+import { FETCH_POKEMON_DETAIL_ACTION_CREATOR } from "../store/actions";
 import { StateDefinition } from "../store/reducer";
+import PokemonDetail from "../models/pokemonDetail";
 
 const PokemonDetail: FC = (): JSX.Element | null => {
+    const location = useLocation();
+    const locationPathName = location.pathname.split("/");
+    const pokemonName = locationPathName[locationPathName.length - 1];
     const dispatch = useDispatch();
-    // const { pokemons } = useSelector((state: StateDefinition) => state.pokemon);
+    const state = useSelector((state: StateDefinition) => state);
+    const [pokemon, setPokemon] = useState<PokemonDetail|null>(null);
+
+    useEffect(() => {
+        // console.log("state change", state);
+        if(state.pokemon) {
+            const pokemons = state.pokemon.pokemons;
+            console.log(pokemons.length);
+            const pokemonTest = pokemons.find((pokemon) => pokemon.name === pokemonName);
+            console.log(pokemonTest);
+        }
+    }, [state.pokemon]);
 
     const getPokemonDetail = (name: string): void => {
         console.log("get pokemon detail");
-        dispatch(TEST_FETCH_ACTION_CREATOR());
-        // dispatch(FETCH_POKEMON_DETAIL_ACTION_CREATOR(name));
+        dispatch(FETCH_POKEMON_DETAIL_ACTION_CREATOR(name));
     };
 
     useEffect(() => {
-        // getPokemonDetail("bulbasaur");
+        console.log(state);
+        getPokemonDetail(pokemonName);
     }, []);
 
     const history = useHistory();
     const backHandler = () => {
         history.goBack();
-        console.log("back");
     };
 
     return (
-        <>
+        <DynamicModuleLoader modules={[getPokemonModule()]}>
             <div>Pokemon Detail</div>
             <button onClick={() => backHandler()}>Back</button>
-        </>
+        </DynamicModuleLoader>
     );
 };
 
