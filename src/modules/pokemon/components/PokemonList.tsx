@@ -6,7 +6,8 @@ import { isEmpty } from "lodash";
 import { FC, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { FETCH_POKEMON_LIST_ACTION_CREATOR, TEST_FETCH_ACTION_CREATOR } from "../store/actions";
+import { useHistory } from "react-router-dom";
+import { FETCH_POKEMON_LIST_ACTION_CREATOR, TEST_FETCH_ACTION_CREATOR, FETCH_POKEMON_DETAIL_ACTION_CREATOR } from "../store/actions";
 import { StateDefinition } from "../store/reducer";
 import PokemonView from "./PokemonView";
 
@@ -19,16 +20,24 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const PokemonList: FC = (): JSX.Element | null => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const containerRef = useRef<HTMLDivElement>(null);
     const [isLoadingNext, setIsLoadingNext] = useState(false);
 
     const { pokemons, morePokemonAvailable } = useSelector((state: StateDefinition) => state.pokemon);
+    console.log(pokemons);
 
     const getPokemons = (offset: number, limit: number): void => {
         // eslint-disable-next-line no-console
         console.log("dispath fetch pokemons");
         dispatch(FETCH_POKEMON_LIST_ACTION_CREATOR(offset, limit));
         dispatch(TEST_FETCH_ACTION_CREATOR());
+    };
+
+    const getPokemonDetail = (name: string): void => {
+        console.log("get pokemon detail");
+        dispatch(FETCH_POKEMON_DETAIL_ACTION_CREATOR(name));
+        // history.push(`pokemon/${name}`);
     };
 
     const onLoadNext = () => {
@@ -84,7 +93,10 @@ const PokemonList: FC = (): JSX.Element | null => {
                             )}
                             {!isEmpty(pokemons) && pokemons.map((pokemon) => (
                                 <Grid item xs={6} key={pokemon.id}>
-                                    <PokemonView pokemon={pokemon} />
+                                    <PokemonView 
+                                        pokemon={pokemon}
+                                        onClickHandler={getPokemonDetail}
+                                    />
                                     {/* <Item>
                                         {pokemon.name}
                                     </Item> */}

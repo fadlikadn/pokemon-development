@@ -1,9 +1,12 @@
 import PaginationResponse from "../../../interfaces/paginationResponse";
 import Pokemon from "../models/pokemon";
+import PokemonDetail from "../models/pokemonDetail";
 import {
     PokemonActionKeys,
     FetchPokemonListAction,
     FetchPokemonListSuccessAction,
+    FetchPokemonDetailAction,
+    FetchPokemonDetailSuccessAction,
     TestFetchAction,
 } from "./actionTypes";
 
@@ -19,6 +22,20 @@ export const FETCH_POKEMON_LIST_SUCCESS_ACTION_CREATOR = (pokemonList: Paginatio
     type: PokemonActionKeys.FETCH_POKEMON_LIST_SUCCESS,
     payload: {
         pokemonList,
+    },
+});
+
+export const FETCH_POKEMON_DETAIL_ACTION_CREATOR = (name: string): FetchPokemonDetailAction => ({
+    type: PokemonActionKeys.FETCH_POKEMON_DETAIL,
+    payload: {
+        name,
+    },
+});
+
+export const FETCH_POKEMON_DETAIL_SUCCESS_ACTION_CREATOR = (pokemon: PokemonDetail): FetchPokemonDetailSuccessAction => ({
+    type: PokemonActionKeys.FETCH_POKEMON_DETAIL_SUCCESS,
+    payload: {
+        pokemon,
     },
 });
 

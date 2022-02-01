@@ -6,11 +6,18 @@ export const moduleEntry: ModuleDefinition = {
     moduleId,
     moduleComponents: [
         {
-            componentId: "root-pokemon",
+            componentId: "pokemon-list",
             component: lazy(() => import("./components/RootPokemon")),
             componentRoute: "/",
             componentRouteExact: true,
-            componentAlwaysLoaded: true, // TODO need set to false when implement navigation
+            componentAlwaysLoaded: false, // TODO need set to false when implement navigation
+        },
+        {
+            componentId: "pokemon-list",
+            component: lazy(() => import("./components/PokemonDetail")),
+            componentRoute: "/pokemon/:name",
+            componentRouteExact: true,
+            componentAlwaysLoaded: false,
         },
     ],
 };
