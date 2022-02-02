@@ -46,8 +46,11 @@ const PokemonList: FC = (): JSX.Element | null => {
 
     const getPokemonDetail = (name: string): void => {
         console.log("get pokemon detail");
-        // dispatch(FETCH_POKEMON_DETAIL_ACTION_CREATOR(name));
-        history.push(`pokemon/${name}`);
+        dispatch(FETCH_POKEMON_DETAIL_ACTION_CREATOR(name));
+        // temporary solution to fix race-condition
+        setTimeout(() => {
+            history.push(`pokemon/${name}`);
+        }, 1000);
     };
 
     const onLoadNext = () => {

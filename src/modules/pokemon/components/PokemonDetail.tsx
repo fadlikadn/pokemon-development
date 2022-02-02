@@ -31,26 +31,34 @@ const PokemonDetail: FC = (): JSX.Element | null => {
     const dispatch = useDispatch();
     const state = useSelector((state: StateDefinition) => state);
     const [pokemon, setPokemon] = useState<PokemonDetail|null>(null);
+    const [forceUpdate, setForceUpdate] = useState(false);
 
     useEffect(() => {
-        console.log("berubah");
         if(state.pokemon && state.pokemon.pokemons) {
             const pokemons = state.pokemon.pokemons;
             const pokemonFind = pokemons.find((pokemon) => pokemon.name === pokemonName);
             if (pokemonFind) {
-                console.log(pokemonFind);
                 setPokemon(pokemonFind);
-                console.log(pokemon);
             }
         }
     }, [state.pokemon]);
+
+    useEffect(() => {
+        if (pokemon?.stats) {
+            setForceUpdate(true);
+        }
+    }, [pokemon?.stats]);
+
+    useEffect(() => {
+        console.log("load ulang data pokemon...")
+    }, [forceUpdate]);
 
     const getPokemonDetail = (name: string): void => {
         const storedPokemons = getSessionStorage(pokemonStorageKey);
         if (storedPokemons) {
             dispatch(SET_POKEMON_STORAGE_ACTION_CREATOR(JSON.parse(storedPokemons) as PokemonDetail[]));
         }
-        dispatch(FETCH_POKEMON_DETAIL_ACTION_CREATOR(name));
+        // dispatch(FETCH_POKEMON_DETAIL_ACTION_CREATOR(name));
     };
 
     useEffect(() => {
