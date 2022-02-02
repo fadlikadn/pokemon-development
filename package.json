@@ -69,6 +69,7 @@
   "scripts": {
     "start": "webpack-cli serve --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
+    "deploy": " aws s3 sync dist/ s3://pokemon-development-fadlikadn",
     "test": "jest --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura --coverageReporters=html",
     "test-summary": "jest --reporters=jest-junit --reporters=jest-summary-reporter",
     "posttest": "npm run lint",
