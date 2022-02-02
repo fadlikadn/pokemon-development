@@ -5,6 +5,7 @@ import { moduleId } from "../settings/config";
 import { ActionTypes, PokemonActionKeys } from "./actionTypes";
 import fetchPokemonList from "./reducer/fetchPokemonList";
 import fetchPokemonDetail from "./reducer/fetchPokemonDetail";
+import setPokemonStorage from "./reducer/setPokemonStorage";
 import { StateDefinition as CoreState } from "../../../store/reducer";
 
 export const InitialState = {
@@ -25,6 +26,9 @@ const reducer = (state = InitialState, action: ActionTypes) => {
 
         case PokemonActionKeys.FETCH_POKEMON_DETAIL_SUCCESS:
             return fetchPokemonDetail(state, action);
+
+        case PokemonActionKeys.SET_POKEMON_STORAGE:
+            return setPokemonStorage(state, action);
 
         default:
             return state;

@@ -1,7 +1,8 @@
 import { InitialState } from "../reducer";
 import { PokemonActionKeys, ActionTypes } from "../actionTypes";
-// import Pokemon from "../../models/pokemon";
 import PokemonDetail from "../../models/pokemonDetail";
+import { pokemonStorageKey } from "../../../../settings/config";
+import { setSessionStorage } from "../../../../helpers/useSessionStorage";
 
 export default (state = InitialState, action: ActionTypes) => {
     switch (action.type) {
@@ -17,6 +18,12 @@ export default (state = InitialState, action: ActionTypes) => {
                     image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`
                 } as PokemonDetail;
             });
+
+            const pokemons = [
+                ...state.pokemons,
+                ...newPokemons,
+            ];
+            setSessionStorage(pokemonStorageKey, JSON.stringify(pokemons));
 
             return {
                 ...state,

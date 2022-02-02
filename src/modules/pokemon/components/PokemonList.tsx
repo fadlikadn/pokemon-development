@@ -7,9 +7,16 @@ import { FC, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useHistory } from "react-router-dom";
-import { FETCH_POKEMON_LIST_ACTION_CREATOR, TEST_FETCH_ACTION_CREATOR, FETCH_POKEMON_DETAIL_ACTION_CREATOR } from "../store/actions";
+import { 
+    FETCH_POKEMON_LIST_ACTION_CREATOR,
+    TEST_FETCH_ACTION_CREATOR,
+    SET_POKEMON_STORAGE_ACTION_CREATOR,
+ } from "../store/actions";
 import { StateDefinition } from "../store/reducer";
 import PokemonView from "./PokemonView";
+import { getSessionStorage } from "../../../helpers/useSessionStorage";
+import { pokemonStorageKey } from "../../../settings/config";
+import PokemonDetail from "../models/pokemonDetail";
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -25,7 +32,6 @@ const PokemonList: FC = (): JSX.Element | null => {
     const [isLoadingNext, setIsLoadingNext] = useState(false);
 
     const { pokemons, morePokemonAvailable } = useSelector((state: StateDefinition) => state.pokemon);
-    console.log(pokemons);
 
     const getPokemons = (offset: number, limit: number): void => {
         // eslint-disable-next-line no-console
@@ -49,11 +55,18 @@ const PokemonList: FC = (): JSX.Element | null => {
     };
 
     useEffect(() => {
-        // get Pokemon List
-        // eslint-disable-next-line no-console
-        console.log("fetching pokemon list");
-        if (pokemons.length === 0) {
-            getPokemons(0, 50);
+        // check session Storage
+        const storedPokemons = getSessionStorage(pokemonStorageKey);
+        if (storedPokemons) {
+            console.log("Pokemon sudah ada");
+            dispatch(SET_POKEMON_STORAGE_ACTION_CREATOR(JSON.parse(storedPokemons) as PokemonDetail[]));
+        } else {
+            // get Pokemon List
+            // eslint-disable-next-line no-console
+            console.log("fetching pokemon list");
+            if (pokemons.length === 0) {
+                getPokemons(0, 50);
+            }
         }
     }, []);
 

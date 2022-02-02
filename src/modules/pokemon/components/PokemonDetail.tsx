@@ -1,11 +1,16 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { DynamicModuleLoader } from "redux-dynamic-modules-react";
 import getPokemonModule from "../store/getPokemonModule";
-import { FETCH_POKEMON_DETAIL_ACTION_CREATOR } from "../store/actions";
+import {
+    FETCH_POKEMON_DETAIL_ACTION_CREATOR,
+    SET_POKEMON_STORAGE_ACTION_CREATOR,
+} from "../store/actions";
 import { StateDefinition } from "../store/reducer";
 import PokemonDetail from "../models/pokemonDetail";
+import { getSessionStorage } from "../../../helpers/useSessionStorage";
+import { pokemonStorageKey } from "../../../settings/config";
 
 const PokemonDetail: FC = (): JSX.Element | null => {
     const location = useLocation();
@@ -13,25 +18,25 @@ const PokemonDetail: FC = (): JSX.Element | null => {
     const pokemonName = locationPathName[locationPathName.length - 1];
     const dispatch = useDispatch();
     const state = useSelector((state: StateDefinition) => state);
-    const [pokemon, setPokemon] = useState<PokemonDetail|null>(null);
+    // const [pokemon, setPokemon] = useState<PokemonDetail|null>(null);
 
     useEffect(() => {
-        // console.log("state change", state);
-        if(state.pokemon) {
+        if(state.pokemon && state.pokemon.pokemons) {
             const pokemons = state.pokemon.pokemons;
-            console.log(pokemons.length);
             const pokemonTest = pokemons.find((pokemon) => pokemon.name === pokemonName);
             console.log(pokemonTest);
         }
     }, [state.pokemon]);
 
     const getPokemonDetail = (name: string): void => {
-        console.log("get pokemon detail");
+        const storedPokemons = getSessionStorage(pokemonStorageKey);
+        if (storedPokemons) {
+            dispatch(SET_POKEMON_STORAGE_ACTION_CREATOR(JSON.parse(storedPokemons) as PokemonDetail[]));
+        }
         dispatch(FETCH_POKEMON_DETAIL_ACTION_CREATOR(name));
     };
 
     useEffect(() => {
-        console.log(state);
         getPokemonDetail(pokemonName);
     }, []);
 

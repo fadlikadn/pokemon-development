@@ -5,6 +5,7 @@ import {
     PokemonActionKeys,
     FetchPokemonListAction,
     FetchPokemonListSuccessAction,
+    SetPokemonStorageAction,
     FetchPokemonDetailAction,
     FetchPokemonDetailSuccessAction,
     TestFetchAction,
@@ -22,6 +23,13 @@ export const FETCH_POKEMON_LIST_SUCCESS_ACTION_CREATOR = (pokemonList: Paginatio
     type: PokemonActionKeys.FETCH_POKEMON_LIST_SUCCESS,
     payload: {
         pokemonList,
+    },
+});
+
+export const SET_POKEMON_STORAGE_ACTION_CREATOR = (pokemons: PokemonDetail[]): SetPokemonStorageAction => ({
+    type: PokemonActionKeys.SET_POKEMON_STORAGE,
+    payload: {
+        pokemons,
     },
 });
 

@@ -1,6 +1,7 @@
 import { InitialState } from "../reducer";
 import { PokemonActionKeys, ActionTypes } from "../actionTypes";
-import PokemonDetail from "../../models/pokemonDetail";
+import { setSessionStorage } from "../../../../helpers/useSessionStorage";
+import { pokemonStorageKey } from "../../../../settings/config";
 
 export default (state = InitialState, action: ActionTypes) => {
     switch (action.type) {
@@ -12,6 +13,8 @@ export default (state = InitialState, action: ActionTypes) => {
                 selectedPokemon.stats = payload.stats;
                 selectedPokemon.types = payload.types;
             }
+
+            setSessionStorage(pokemonStorageKey, JSON.stringify(state.pokemons));
 
             return state;
         }

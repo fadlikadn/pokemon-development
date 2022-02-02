@@ -1,6 +1,6 @@
 import reducer from "./reducer";
 import saga from "./sagas";
-import { routerReducer } from "./routerReducer";
+// import { routerReducer } from "./routerReducer";
 
 export const reducerId = "core";
 
