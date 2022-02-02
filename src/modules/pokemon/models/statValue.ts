@@ -1,7 +1,7 @@
 import Stat from "./stat";
 
 export default interface StatValue {
-    base_state: number;
+    base_stat: number;
     effort: number;
     stat: Stat;
 }

@@ -21,15 +21,22 @@ const PokemonView: FC<PokemonViewProps> = ({
     }
 
     return (
-        <Card onClick={() => clickHandler()}>
+        <Card onClick={() => clickHandler()} sx={{ 
+            height: '270px',
+            '&:hover': {
+                backgroundColor: '#243440',
+                color: 'white',
+                cursor: 'pointer',
+            }
+        }}>
             <CardMedia
                 component="img"
-                sx={{ width: 200 }}
+                sx={{ width: 200, margin: '0 auto', }}
                 image={pokemon?.image}
                 alt={pokemon.name}
             />
             <CardContent>
-                <Typography variant="h5" component="div">
+                <Typography variant="h5" component="div" sx={{ margin: '0 auto', textAlign: 'center', textTransform: 'capitalize', fontWeight: 'bold', }}>
                     {pokemon.name}
                 </Typography>
             </CardContent>

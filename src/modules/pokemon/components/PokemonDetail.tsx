@@ -1,7 +1,19 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { DynamicModuleLoader } from "redux-dynamic-modules-react";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import Chip from "@mui/material/Chip";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Button from "@mui/material/Button";
 import getPokemonModule from "../store/getPokemonModule";
 import {
     FETCH_POKEMON_DETAIL_ACTION_CREATOR,
@@ -18,13 +30,18 @@ const PokemonDetail: FC = (): JSX.Element | null => {
     const pokemonName = locationPathName[locationPathName.length - 1];
     const dispatch = useDispatch();
     const state = useSelector((state: StateDefinition) => state);
-    // const [pokemon, setPokemon] = useState<PokemonDetail|null>(null);
+    const [pokemon, setPokemon] = useState<PokemonDetail|null>(null);
 
     useEffect(() => {
+        console.log("berubah");
         if(state.pokemon && state.pokemon.pokemons) {
             const pokemons = state.pokemon.pokemons;
-            const pokemonTest = pokemons.find((pokemon) => pokemon.name === pokemonName);
-            console.log(pokemonTest);
+            const pokemonFind = pokemons.find((pokemon) => pokemon.name === pokemonName);
+            if (pokemonFind) {
+                console.log(pokemonFind);
+                setPokemon(pokemonFind);
+                console.log(pokemon);
+            }
         }
     }, [state.pokemon]);
 
@@ -47,8 +64,67 @@ const PokemonDetail: FC = (): JSX.Element | null => {
 
     return (
         <DynamicModuleLoader modules={[getPokemonModule()]}>
-            <div>Pokemon Detail</div>
-            <button onClick={() => backHandler()}>Back</button>
+            <Grid sx={{
+                width: '500px',
+                margin: '0 auto',
+            }}>
+                <Box sx={{ padding: '50px' }}>
+                    <Typography variant="h3" sx={{ margin: '0 auto' }}>Pokemon Detail</Typography>
+                    { pokemon !== null && (
+                        <Card sx={{
+                            '&:hover': {
+                                backgroundColor: '#243440',
+                                color: 'white',
+                            }
+                        }}>
+                            <CardMedia
+                                component="img"
+                                sx={{ width: 200, margin: '0 auto', }}
+                                image={pokemon?.image}
+                                alt={pokemon?.name}
+                            />
+                            <CardContent sx={{ '> *': { margin: '10px 10px' } }}>
+                                <Typography variant="h5" component="div" sx={{ margin: '0 auto', textAlign: 'center', textTransform: 'capitalize', fontWeight: 'bold', }}>
+                                    {pokemon?.name}
+                                </Typography>
+
+                                { pokemon.types && (
+                                    <Paper elevation={2} sx={{
+                                        padding: '12px',
+                                        margin: '10px 0px',
+                                    }}>
+                                        <Typography>Types</Typography>
+                                        { pokemon.types.length > 0 && pokemon.types.map((type) => (
+                                            <Chip key={type.slot} color="primary" label={type.type.name} ></Chip>
+                                        ))}
+                                    </Paper>
+                                )}
+
+                                { pokemon.stats && (
+                                    <Paper elevation={2}  sx={{
+                                        padding: '12px',
+                                        margin: '10px 0px',
+                                    }}>
+                                        <Typography>Stats</Typography>
+                                        <List>
+                                            {pokemon.stats.length > 0 && pokemon.stats.map((stat, index) => (
+                                                <ListItem key={index}>
+                                                    <ListItemText
+                                                        primary={`${stat.stat.name}: ${stat.base_stat}`}
+                                                    />
+                                                </ListItem>
+                                            ))}
+                                        </List>
+                                    </Paper>
+                                )}
+                            </CardContent>
+                        </Card>
+                    )}
+
+                    <Button variant="contained" sx={{ margin: '0 auto' }} onClick={() => backHandler()}>Back</Button>
+                </Box>
+            </Grid>
+            
         </DynamicModuleLoader>
     );
 };

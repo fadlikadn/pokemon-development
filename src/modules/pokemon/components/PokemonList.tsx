@@ -1,6 +1,7 @@
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 import { isEmpty } from "lodash";
 import { FC, useEffect, useRef, useState } from "react";
@@ -9,6 +10,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useHistory } from "react-router-dom";
 import { 
     FETCH_POKEMON_LIST_ACTION_CREATOR,
+    FETCH_POKEMON_DETAIL_ACTION_CREATOR,
     TEST_FETCH_ACTION_CREATOR,
     SET_POKEMON_STORAGE_ACTION_CREATOR,
  } from "../store/actions";
@@ -22,10 +24,12 @@ const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
     padding: theme.spacing(1),
     textAlign: "center",
+    margin: "0 auto",
     color: theme.palette.text.secondary,
 }));
 
 const PokemonList: FC = (): JSX.Element | null => {
+    // const classes = useStyles();
     const dispatch = useDispatch();
     const history = useHistory();
     const containerRef = useRef<HTMLDivElement>(null);
@@ -87,40 +91,51 @@ const PokemonList: FC = (): JSX.Element | null => {
     console.log("Pokemon List");
     return (
         <>
-            <div>
+            <Box sx={{ 
+                // flexGrow: 1, 
+                padding: '12px',
+            }}>
                 {/* Pokemon List
                 <button onClick={() => getPokemons(0, 50)}>test Fetch</button> */}
                 <InfiniteScroll
                     dataLength={pokemons.length}
                     next={onLoadNext}
                     hasMore={morePokemonAvailable}
-                    loader={<h4>Loading...</h4>}
+                    loader={
+                        <Grid container spacing={2} sx={{
+                            width: '500px',
+                            margin: '0 auto',
+                        }}>
+                            <Typography variant="h4" sx={{ margin: '0 auto' }}>Loading...</Typography>
+                        </Grid>
+                    }
                     endMessage={
                         <p>
                             You have seen it all!
                         </p>
                     }
                 >
-                    <Box sx={{ flexGrow: 1 }}>
-                        <Grid container spacing={2}>
-                            {isEmpty(pokemons) && (
-                                <Item>kosong</Item>
-                            )}
-                            {!isEmpty(pokemons) && pokemons.map((pokemon) => (
-                                <Grid item xs={6} key={pokemon.id}>
-                                    <PokemonView 
-                                        pokemon={pokemon}
-                                        onClickHandler={getPokemonDetail}
-                                    />
-                                    {/* <Item>
-                                        {pokemon.name}
-                                    </Item> */}
-                                </Grid>
-                            ))}
-                        </Grid>
-                    </Box>
+                    <Grid container spacing={2} sx={{
+                        width: '500px',
+                        margin: '0 auto',
+                    }}>
+                        {isEmpty(pokemons) && (
+                            <Item>kosong</Item>
+                        )}
+                        {!isEmpty(pokemons) && pokemons.map((pokemon) => (
+                            <Grid item xs={6} key={pokemon.id}>
+                                <PokemonView 
+                                    pokemon={pokemon}
+                                    onClickHandler={getPokemonDetail}
+                                />
+                                {/* <Item>
+                                    {pokemon.name}
+                                </Item> */}
+                            </Grid>
+                        ))}
+                    </Grid>   
                 </InfiniteScroll>
-            </div>
+            </Box>
         </>
     );
 };
